@@ -1,15 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UserManagementAPI.Models;
 
 public record CreateUserDto(
-    string FirstName,
-    string LastName,
-    string Email,
-    string Department
+    [Required, StringLength(50, MinimumLength = 1)] string FirstName,
+    [Required, StringLength(50, MinimumLength = 1)] string LastName,
+    [Required, EmailAddress] string Email,
+    [Required, StringLength(100, MinimumLength = 1)] string Department,
+    bool IsActive = true
 );
+
 public record UpdateUserDto(
-    string FirstName,
-    string LastName,
-    string Email,
-    bool IsActive,
-    string Department
+    [Required, StringLength(50, MinimumLength = 1)] string FirstName,
+    [Required, StringLength(50, MinimumLength = 1)] string LastName,
+    [Required, EmailAddress] string Email,
+    [Required] bool IsActive,
+    [Required, StringLength(100, MinimumLength = 1)] string Department
 );

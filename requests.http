@@ -1,10 +1,21 @@
 ###
+# GET: list users (happy path)
 GET http://localhost:5189/api/users
 
 ###
+# GET: existing user (happy path)
 GET http://localhost:5189/api/users/1
 
 ###
+# GET: non-existent user -> should return 404
+GET http://localhost:5189/api/users/999
+
+###
+# GET: invalid id -> should return 400
+GET http://localhost:5189/api/users/0
+
+###
+# POST: create a valid user -> should return 201 Created
 POST http://localhost:5189/api/users
 Content-Type: application/json
 
@@ -14,3 +25,103 @@ Content-Type: application/json
   "email": "mia.pham@techhive.local",
   "department": "Finance"
 }
+
+###
+# POST: duplicate email -> should return 409 Conflict (use existing email)
+POST http://localhost:5189/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Duplicate",
+  "lastName": "User",
+  "email": "ava.nguyen@techhive.local",
+  "department": "HR"
+}
+
+###
+# POST: invalid email -> should return 400 Bad Request
+POST http://localhost:5189/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Invalid",
+  "lastName": "Email",
+  "email": "not-an-email",
+  "department": "Sales"
+}
+
+###
+# POST: missing required fields -> should return 400 Bad Request (ModelState)
+POST http://localhost:5189/api/users
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "department": ""
+}
+
+###
+# PUT: update existing user (happy path) - update user 1's department -> 204 No Content
+PUT http://localhost:5189/api/users/1
+Content-Type: application/json
+
+{
+  "firstName": "Ava",
+  "lastName": "Nguyen",
+  "email": "ava.nguyen@techhive.local",
+  "isActive": true,
+  "department": "People Ops"
+}
+
+###
+# PUT: update non-existent user -> should return 404 Not Found
+PUT http://localhost:5189/api/users/999
+Content-Type: application/json
+
+{
+  "firstName": "No",
+  "lastName": "User",
+  "email": "no.user@example.com",
+  "isActive": true,
+  "department": "None"
+}
+
+###
+# PUT: invalid email -> should return 400 Bad Request
+PUT http://localhost:5189/api/users/1
+Content-Type: application/json
+
+{
+  "firstName": "Ava",
+  "lastName": "Nguyen",
+  "email": "invalid-email",
+  "isActive": true,
+  "department": "HR"
+}
+
+###
+# PUT: duplicate email -> should return 409 Conflict (try to set user 1's email to user 2's email)
+PUT http://localhost:5189/api/users/1
+Content-Type: application/json
+
+{
+  "firstName": "Ava",
+  "lastName": "Nguyen",
+  "email": "keanulee600@gmail.com",
+  "isActive": true,
+  "department": "HR"
+}
+
+###
+# DELETE: delete an existing user (e.g. user 2) -> should return 204 No Content
+DELETE http://localhost:5189/api/users/2
+
+###
+# DELETE: delete non-existent user -> should return 404 Not Found
+DELETE http://localhost:5189/api/users/999
+
+###
+# DELETE: invalid id -> should return 400 Bad Request
+DELETE http://localhost:5189/api/users/0
