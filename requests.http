@@ -1,0 +1,16 @@
+###
+GET http://localhost:5189/api/users
+
+###
+GET http://localhost:5189/api/users/1
+
+###
+POST http://localhost:5189/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Mia",
+  "lastName": "Pham",
+  "email": "mia.pham@techhive.local",
+  "department": "Finance"
+}
